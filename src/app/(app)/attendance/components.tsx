@@ -67,11 +67,12 @@ export const Toolbar: React.FC<{
     width: 500,
     outsideClick: true,
     buttons: [
-      <Button size="small" onClick={() => setOpen(false)}>
+      <Button key="1" size="small" onClick={() => setOpen(false)}>
         Cancel
       </Button>,
-      <Spacing />,
+      <Spacing key="2" />,
       <Button
+        key="3"
         type="filled"
         size="small"
         disabled={form.id.length < 8 || form.name.length < 3}
