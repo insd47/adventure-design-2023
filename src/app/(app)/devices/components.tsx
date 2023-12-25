@@ -68,7 +68,7 @@ export const Sensors: React.FC = () => {
 
   useEffect(() => {
     const socket = new WebSocket(
-      `${window.location.protocol === "https" ? "wss" : "ws"}://${
+      `${window.location.protocol === "https:" ? "wss" : "ws"}://${
         window.location.host
       }/api/ws`
     );
