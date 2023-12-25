@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     path: "/",
-    expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+    expires: new Date(Date.now() + 1000 * 60 * 60),
   });
 
   return response;

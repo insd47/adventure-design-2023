@@ -3,12 +3,9 @@ import "../globals.css";
 import Header from "@/components/header";
 import { Navigation } from "@/components";
 
-import admin from "@/firebase/admin";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { checkLogin } from "@/firebase/auth";
-const auth = admin.auth();
-const db = admin.firestore();
 
 export default async function RootLayout({
   children,
