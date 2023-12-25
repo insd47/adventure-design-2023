@@ -20,7 +20,11 @@ export const ControlCard: React.FC<{
             className={[styles.status, isActive ? styles.active : ""].join(" ")}
           />
         </div>
-        <Switch disabled={!isActive} onChange={!isActive ? () => {} : undefined} name={"switch-" + name.replaceAll(" ", "")} />
+        <Switch
+          disabled={!isActive}
+          onChange={!isActive ? () => {} : undefined}
+          name={"switch-" + name.replaceAll(" ", "")}
+        />
       </header>
       <p>{description}</p>
     </div>
@@ -63,8 +67,12 @@ export const Sensors: React.FC = () => {
   const refreshTimer = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
-    const socket = new WebSocket(`ws://${window.location.host}/api/ws`);
-  
+    const socket = new WebSocket(
+      `${window.location.protocol === "https" ? "wss" : "ws"}://${
+        window.location.host
+      }/api/ws`
+    );
+
     socket.onopen = () => {
       console.log("websocket opened");
       socket.send("GET_SENSORS");
@@ -76,7 +84,7 @@ export const Sensors: React.FC = () => {
         }
       }, 2000);
     };
-  
+
     socket.onmessage = (event) => {
       if (
         event.data &&
@@ -88,11 +96,11 @@ export const Sensors: React.FC = () => {
         setSensorValues(parsedData);
       }
     };
-  
+
     socket.onclose = () => {
       clearInterval(refreshTimer.current);
     };
-  
+
     return () => {
       clearInterval(refreshTimer.current);
       socket.close();
