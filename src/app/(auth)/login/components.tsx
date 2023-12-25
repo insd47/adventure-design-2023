@@ -97,7 +97,7 @@ export const Form: React.FC = () => {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          }).then((res) => router.push(res.url));
+          }).then((res) => router.push("/attendance"));
       })
       .catch((e) => {
         if (e.code === "auth/user-disabled") {

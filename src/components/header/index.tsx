@@ -9,7 +9,7 @@ export default function Header() {
   return (
     <header className={styles.header}>
       <h2>Adventure Design</h2>
-      <Button size="small" onClick={() => fetch("/api/auth/logout").then((res) => router.push(res.url))}>Sign Out</Button>
+      <Button size="small" onClick={() => fetch("/api/auth/logout").then(() => router.push("/login"))}>Sign Out</Button>
     </header>
   );
 }

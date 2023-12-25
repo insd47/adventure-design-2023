@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
-  let response = NextResponse.redirect(new URL('/login', req.nextUrl));
+export async function GET() {
+  let response = NextResponse.json(null);
   response.cookies.set("token", "", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",

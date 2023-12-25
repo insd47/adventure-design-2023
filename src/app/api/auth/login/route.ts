@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ message: "Permission Denied" }, { status: 403 });
   }
 
-  let response = NextResponse.redirect(new URL('/login', req.nextUrl));
+  let response = NextResponse.json(null);
   response.cookies.set("token", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
