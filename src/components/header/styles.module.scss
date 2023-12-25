@@ -1,0 +1,13 @@
+.header {
+  background-color: var(--color-box-background);
+  height: 72px;
+  display: flex;
+  align-items: center;
+  padding: 0 40px;
+  border-bottom: 1px solid var(--color-box-border-2);
+  flex-shrink: 0;
+  
+  & > h2 {
+    flex: 1;
+  }
+}
