@@ -42,7 +42,7 @@ export async function SOCKET(
       }
 
       else if (message.startsWith("AUTH=")) {
-        const studentId = message.split("AUTH=")[1];
+        const studentId = message.split("AUTH=")[1].trim();
 
         const today = new Date().toISOString().split("T")[0];
         const docRef = db.collection("attendance").doc(today).collection("students").doc(studentId);
