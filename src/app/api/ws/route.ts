@@ -16,6 +16,8 @@ export async function SOCKET(
   const url = request.url?.split("device_id=");
   const deviceId = url && url.length > 1 ? url[1].split("&")[0] : null;
 
+  console.log(deviceId, "connecs to:", process.env.DEVICE_ID);
+
   if (deviceId === process.env.DEVICE_ID) {
     arduinoClient = client;
     console.log("arduino connected!");
