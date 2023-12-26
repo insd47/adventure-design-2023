@@ -84,6 +84,7 @@ export const Socket: React.FC = () => {
     socket.onopen = () => {
       console.log("websocket opened");
       socket.send("GET_SENSORS");
+
       refreshTimer.current = setInterval(() => {
         if (socket.readyState === WebSocket.OPEN) {
           socket.send("GET_SENSORS");
