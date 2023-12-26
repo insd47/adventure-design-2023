@@ -1,4 +1,7 @@
 import { checkLogin } from "@/firebase/auth";
+import admin from "@/firebase/admin";
+import { AttendanceStatus } from "@/firebase/types";
+const db = admin.firestore();
 
 let sensorValues: {
   temperature: number;
@@ -37,6 +40,18 @@ export async function SOCKET(
           gas: sensors[2],
         });
       }
+
+      else if (message.startsWith("AUTH=")) {
+        const studentId = message.split("AUTH=")[1];
+
+        const today = new Date().toISOString().split("T")[0];
+        const docRef = db.collection("attendance").doc(today).collection("students").doc(studentId);
+
+        docRef.set({
+          id: studentId,
+          status: AttendanceStatus.ATTENDANCE,
+        });
+      }
     });
   }
 
@@ -51,7 +66,7 @@ export async function SOCKET(
         client.send("SENSORS=" + JSON.stringify(sensorValues));
       }
 
-      if (message.startsWith("SET_DEVICE_") && arduinoClient) {
+      else if (message.startsWith("SET_DEVICE_") && arduinoClient) {
         arduinoClient.send(message);
       }
     });
