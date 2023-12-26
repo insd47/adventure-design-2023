@@ -16,8 +16,6 @@ export async function SOCKET(
   const url = request.url?.split("device_id=");
   const deviceId = url && url.length > 1 ? url[1].split("&")[0] : null;
 
-  console.log(deviceId, "connecs to:", process.env.DEVICE_ID);
-
   if (deviceId === process.env.DEVICE_ID) {
     arduinoClient = client;
     console.log("arduino connected!");
@@ -40,10 +38,6 @@ export async function SOCKET(
         });
       }
     });
-
-    client.on("close", () => {
-      console.log("a client disconnected!");
-    });
   }
 
   const token = request.headers.cookie?.split("token=")[1]?.split(";")[0];
@@ -63,4 +57,8 @@ export async function SOCKET(
       }
     });
   }
+
+  client.on("close", () => {
+    console.log("a client disconnected!");
+  });
 }
