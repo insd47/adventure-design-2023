@@ -26,6 +26,7 @@ export async function SOCKET(
 
       if (message.startsWith("SENSORS=")) {
         const sensors = message.split("SENSORS=")[1].split(",").map(Number);
+        console.log(sensors);
 
         if (sensorValues.length >= 10) {
           sensorValues.shift();
@@ -52,7 +53,6 @@ export async function SOCKET(
       }
 
       if (message.startsWith("SET_DEVICE_") && arduinoClient) {
-        console.log("FORWARDING TO ARDUINO: " + message);
         arduinoClient.send(message);
       }
     });

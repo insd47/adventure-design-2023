@@ -76,7 +76,7 @@ export const Socket: React.FC = () => {
     const socket = new WebSocket(
       `${window.location.protocol === "https:" ? "wss" : "ws"}://${
         window.location.host
-      }/api/ws?device_id=hello`
+      }/api/ws`
     );
 
     socketRef.current = socket;
