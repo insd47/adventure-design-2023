@@ -12,7 +12,6 @@ import {
 
 import { Student, Attendance, AttendanceStatus } from "@/firebase/types";
 import { useEffect, useState } from "react";
-import { get } from "http";
 
 export const Toolbar: React.FC<{
   students: (Student & Attendance)[];

@@ -9,7 +9,8 @@ export const ControlCard: React.FC<{
   isActive: boolean;
   isEnabled: boolean;
   description: string;
-}> = ({ name, isActive, isEnabled, description }) => {
+  onChange?: (value: boolean) => void;
+}> = ({ name, isActive, isEnabled, description, onChange }) => {
   return (
     <div className={styles.card}>
       <header>
@@ -22,7 +23,8 @@ export const ControlCard: React.FC<{
         </div>
         <Switch
           disabled={!isActive}
-          onChange={!isActive ? () => {} : undefined}
+          checked={isEnabled}
+          onChange={onChange}
           name={"switch-" + name.replaceAll(" ", "")}
         />
       </header>
@@ -62,16 +64,22 @@ interface SensorValue {
   gas: number;
 }
 
-export const Sensors: React.FC = () => {
+export const Socket: React.FC = () => {
   const [sensorValues, setSensorValues] = useState<SensorValue[]>([]);
   const refreshTimer = useRef<NodeJS.Timeout>();
+  const socketRef = useRef<WebSocket>();
+
+  const controlNames = ["Air Conditioner", "Light", "Air Cleaner"];
+  const [controls, setControls] = useState<[boolean, boolean, boolean]>([false, false, false]);
 
   useEffect(() => {
     const socket = new WebSocket(
       `${window.location.protocol === "https:" ? "wss" : "ws"}://${
         window.location.host
-      }/api/ws`
+      }/api/ws?device_id=hello`
     );
+
+    socketRef.current = socket;
 
     socket.onopen = () => {
       console.log("websocket opened");
@@ -111,25 +119,46 @@ export const Sensors: React.FC = () => {
     sensorValues.length > 0 ? sensorValues[sensorValues.length - 1] : undefined;
 
   return (
-    <div className={styles.info}>
-      <InfoCard
-        name="Temperature"
-        isActive={!!lastValue}
-        value={lastValue?.temperature ?? "--"}
-        unit="°C"
-      />
-      <InfoCard
-        name="Humidity"
-        isActive={!!lastValue}
-        value={lastValue?.humidity ?? "--"}
-        unit="%"
-      />
-      <InfoCard
-        name="Fart Smell"
-        isActive={!!lastValue}
-        value={lastValue?.gas ?? "--"}
-        unit="ppm"
-      />
-    </div>
+    <>
+      <div className={styles.control}>
+        {controlNames.map((name, index) => (
+          <ControlCard
+            key={name}
+            name={name}
+            isActive={true}
+            isEnabled={controls[index]}
+            description={`Unsupported yet.`}
+            onChange={(value) => {
+              setControls((prev) => {
+                const newControls: [boolean, boolean, boolean] = [...prev];
+                newControls[index] = value;
+                return newControls;
+              });
+
+              socketRef.current?.send(`SET_DEVICE_${index}=${value ? "1" : "0"}`);
+            }}
+          />))}
+      </div>
+      <div className={styles.info}>
+        <InfoCard
+          name="Temperature"
+          isActive={!!lastValue}
+          value={lastValue?.temperature ?? "--"}
+          unit="°C"
+        />
+        <InfoCard
+          name="Humidity"
+          isActive={!!lastValue}
+          value={lastValue?.humidity ?? "--"}
+          unit="%"
+        />
+        <InfoCard
+          name="Fart Smell"
+          isActive={!!lastValue}
+          value={lastValue?.gas ?? "--"}
+          unit="ppm"
+        />
+      </div>
+    </>
   );
 };
